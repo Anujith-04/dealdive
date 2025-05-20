@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DealDive - Best Online Deals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #0073e6;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .product {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+    }
+    .product img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .product h3 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+    .product p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background-color: #0073e6;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      background-color: #f1f1f1;
+      margin-top: 2rem;
+    }
+    .form {
+      margin-top: 2rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form input, .form textarea {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form button {
+      background-color: #0073e6;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .admin-only {
+      display: none;
+    }
+  </style>
+  <script>
+    const isAdmin = true; // Change to false to hide form access for regular users
+
+    function addProduct(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const description = document.getElementById('description').value;
+      const image = document.getElementById('image').value;
+      const link = document.getElementById('link').value;
+      const productList = document.querySelector('.products');
+
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `
+        <img src="${image}" alt="${name}">
+        <h3>${name}</h3>
+        <p>${description}</p>
+        <a href="${link}" class="btn" target="_blank">Buy on Amazon</a>
+        <button onclick="this.parentElement.remove()" class="btn" style="background-color:red;margin-top:10px;">Delete</button>
+      `;
+
+      productList.appendChild(div);
+      document.getElementById('productForm').reset();
+    }
+
+    window.onload = function() {
+      const defaultProducts = [
+        {
+          name: "Wireless Headphones",
+          description: "High-quality sound with long-lasting battery life.",
+          image: "https://via.placeholder.com/300x200",
+          link: "#"
+        },
+        {
+          name: "Smartwatch",
+          description: "Track your fitness and notifications on the go.",
+          image: "https://via.placeholder.com/300x200",
+          link: "#"
+        },
+        {
+          name: "Portable Blender",
+          description: "Make smoothies anywhere with this compact blender.",
+          image: "https://via.placeholder.com/300x200",
+          link: "#"
+        }
+      ];
+
+      defaultProducts.forEach(prod => {
+        const productList = document.querySelector('.products');
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <img src="${prod.image}" alt="${prod.name}">
+          <h3>${prod.name}</h3>
+          <p>${prod.description}</p>
+          <a href="${prod.link}" class="btn" target="_blank">Buy on Amazon</a>
+          <button onclick="this.parentElement.remove()" class="btn" style="background-color:red;margin-top:10px;">Delete</button>
+        `;
+        productList.appendChild(div);
+      });
+
+      if (isAdmin) {
+        document.querySelector('.form').classList.remove('admin-only');
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>DealDive</h1>
+    <p>Your Daily Dive into Top Deals Online</p>
+  </header>
+  <div class="container">
+    <h2>Featured Deals</h2>
+    <div class="products"></div>
+
+    <div class="form admin-only">
+      <h3>Add New Product</h3>
+      <form id="productForm" onsubmit="addProduct(event)">
+        <input type="text" id="name" placeholder="Product Name" required />
+        <input type="text" id="description" placeholder="Short Description" required />
+        <input type="url" id="image" placeholder="Image URL" required />
+        <input type="url" id="link" placeholder="Amazon Affiliate Link" required />
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2025 DealDive. As an Amazon Associate, we earn from qualifying purchases.</p>
+  </footer>
+</body>
+</html>
